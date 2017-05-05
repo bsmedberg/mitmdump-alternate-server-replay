@@ -13,4 +13,4 @@ Make a recording as normal:
 
 To serve a replay:
 
-    mitmdump -s "~/mitmdump-alternate-server-replay/alternate-server-replay.py ~/record-server-responses.md" --socks
+    mitmdump -s "~/mitmdump-alternate-server-replay/alternate-server-replay.py ~/record-server-responses.md ..." --socks

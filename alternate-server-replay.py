@@ -17,9 +17,9 @@ from mitmproxy import io
 from mitmproxy import http
 
 class ServerPlayback:
-    def __init__(self, replayfile):
+    def __init__(self, replayfiles):
         self.options = None
-        self.replayfile = replayfile
+        self.replayfiles = replayfiles
         self.flowmap = {}
 
     def load(self, flows):
@@ -156,7 +156,7 @@ class ServerPlayback:
         self.options = options
         self.clear()
         try:
-            flows = io.read_flows_from_paths([self.replayfile])
+            flows = io.read_flows_from_paths(self.replayfiles)
         except exceptions.FlowReadException as e:
             raise exceptions.OptionsError(str(e))
         self.load(flows)
@@ -183,6 +183,6 @@ import argparse
 import sys
 
 def start():
-    file, = sys.argv[1:]
-    print("Replaying from file: {}".format(file))
+    files = sys.argv
+    print("Replaying from file: {}".format(files))
     return ServerPlayback(file)
