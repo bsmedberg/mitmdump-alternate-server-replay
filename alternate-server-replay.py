@@ -184,5 +184,5 @@ import sys
 
 def start():
     files = sys.argv
-    print("Replaying from file: {}".format(files))
-    return ServerPlayback(file)
+    print("Replaying from files: {}".format(files))
+    return ServerPlayback(files)
