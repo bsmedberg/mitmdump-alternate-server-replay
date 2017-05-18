@@ -183,6 +183,6 @@ import argparse
 import sys
 
 def start():
-    files = sys.argv
+    files = sys.argv[1:]
     print("Replaying from files: {}".format(files))
     return ServerPlayback(files)
