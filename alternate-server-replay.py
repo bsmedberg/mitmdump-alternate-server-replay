@@ -7,6 +7,7 @@
 
 import hashlib
 import urllib
+import sys
 from collections import defaultdict
 from typing import Any  # noqa
 from typing import List  # noqa
@@ -15,6 +16,7 @@ from mitmproxy import ctx
 from mitmproxy import exceptions
 from mitmproxy import io
 from mitmproxy import http
+
 
 class ServerPlayback:
     def __init__(self, replayfiles):
@@ -31,7 +33,7 @@ class ServerPlayback:
     def clear(self):
         self.flowmap = {}
 
-    #def count(self):
+    # def count(self):
     #    return sum([len(i) for i in self.flowmap.values()])
 
     def _parse(self, r):
@@ -89,7 +91,6 @@ class ServerPlayback:
         path_a, queries_a, form_a, content_a = self._parse(request_a)
         path_b, queries_b, form_b, content_b = self._parse(request_b)
 
-
         keys_a = set(queries_a.keys())
         keys_b = set(queries_b.keys())
         if keys_a == keys_b:
@@ -135,7 +136,8 @@ class ServerPlayback:
         # if it's an exact match, great!
         if len(flows) == 1:
             candidate = flows[0]
-            if candidate.request.url == request.url and candidate.request.raw_content == request.raw_content:
+            if (candidate.request.url == request.url and
+               candidate.request.raw_content == request.raw_content):
                 ctx.log.info("For request {} found exact replay match".format(request.url))
                 return candidate
 
@@ -149,7 +151,8 @@ class ServerPlayback:
             if candidate_match > match:
                 match = candidate_match
                 flow = candidate_flow
-        ctx.log.info("For request {} best match {} with score=={}".format(request.url, flow.request.url, match))
+        ctx.log.info("For request {} best match {} with score=={}".format(request.url,
+                     flow.request.url, match))
         return candidate_flow
 
     def configure(self, options, updated):
@@ -178,9 +181,6 @@ class ServerPlayback:
                 )
                 f.response = http.HTTPResponse.make(404, b'', {'content-type': 'text/plain'})
 
-
-import argparse
-import sys
 
 def start():
     files = sys.argv[1:]
